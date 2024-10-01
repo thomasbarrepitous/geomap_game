@@ -17,6 +17,9 @@ export default {
           900: '#171717',
         },
       },
+      gradientColorStops: theme => ({
+        ...theme('colors'),
+      }),
     },
   },
   plugins: [],

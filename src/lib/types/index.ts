@@ -6,6 +6,7 @@ export interface Region {
 
 export interface MapData {
   regions: Region[];
+  name: string;
 }
 
 export interface GameMode {
