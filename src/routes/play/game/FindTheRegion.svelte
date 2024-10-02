@@ -100,7 +100,6 @@
 </script>
 
 <div class="container mx-auto px-4 py-8 relative">
-  <h1 class="text-4xl font-bold mb-8 text-center text-gray-800 dark:text-gray-100">Find the Region</h1>
 
   {#if !gameStarted && !gameEnded}
     <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-70 backdrop-filter backdrop-blur-md z-50" in:fade={{ duration: 300 }}>
