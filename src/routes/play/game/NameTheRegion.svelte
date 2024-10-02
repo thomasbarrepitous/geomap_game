@@ -64,7 +64,7 @@
 
   function checkAnswer() {
     if (currentRegion && canSubmit) {
-      if (userInput.toLowerCase() === currentRegion.name.toLowerCase()) {
+      if (normalizeString(userInput) === normalizeString(currentRegion.name)) {
         feedback = 'Correct!';
         score.update(n => n + 1);
         showNotification = true;
@@ -83,6 +83,15 @@
       }
       userInput = '';
     }
+  }
+
+  // Add this new function to normalize strings
+  function normalizeString(str: string): string {
+    return str
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]/g, "");
   }
 
   function handleKeydown(event: KeyboardEvent) {
