@@ -6,7 +6,7 @@
 
 <div class="min-h-screen flex flex-col bg-white dark:bg-gray-900">
   <header class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
-    <nav class="container mx-auto px-4 py-4">
+    <nav class="container mx-auto px-4 py-2">
       <div class="flex justify-between items-center">
         <a href="/" class="text-2xl font-bold text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
           GeoMap Game

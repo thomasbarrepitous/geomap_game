@@ -13,6 +13,7 @@
   let gameEnded = false;
   let timer: NodeJS.Timeout;
   let countdown = 5;
+  let circleLength = 439.8; // Circumference of the circle
 
   onMount(() => {
     if ($currentMap) {
@@ -27,12 +28,13 @@
 
   function startCountdown() {
     const countdownTimer = setInterval(() => {
-      countdown--;
-      if (countdown === 0) {
+      countdown -= 0.1; // Decrease by 0.1 instead of 1
+      if (countdown <= 0) {
         clearInterval(countdownTimer);
+        countdown = 0; // Ensure it doesn't go below 0
         startGame();
       }
-    }, 1000);
+    }, 100); // Run every 100ms for smoother animation
   }
 
   function startGame() {
@@ -100,10 +102,38 @@
   <h1 class="text-4xl font-bold mb-8 text-center text-gray-800 dark:text-gray-100">Find the Region</h1>
 
   {#if !gameStarted && !gameEnded}
-    <div class="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-70 backdrop-filter backdrop-blur-md z-50" in:fade={{ duration: 300 }}>
+    <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-70 backdrop-filter backdrop-blur-md z-50" in:fade={{ duration: 300 }}>
       <div class="text-center" in:fly={{ y: 20, duration: 300 }}>
-        <div class="text-8xl font-bold text-white mb-6 animate-pulse">{countdown}</div>
-        <p class="text-2xl text-white">Get ready!</p>
+        <div class="relative w-40 h-40 mx-auto mb-8">
+          <svg class="w-full h-full transform -rotate-90">
+            <circle
+              cx="80"
+              cy="80"
+              r="70"
+              fill="none"
+              stroke="#4B5563"
+              stroke-width="8"
+            />
+            <circle
+              cx="80"
+              cy="80"
+              r="70"
+              fill="none"
+              stroke="#60A5FA"
+              stroke-width="8"
+              stroke-dasharray={circleLength}
+              stroke-dashoffset={circleLength * (countdown / 5)}
+              class="transition-all duration-100 ease-linear"
+            />
+          </svg>
+          <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div class="text-6xl font-bold text-white">{Math.ceil(countdown)}</div>
+          </div>
+        </div>
+        <p class="text-2xl text-white font-light tracking-wide mb-4">Get ready!</p>
+        <p class="text-lg text-white font-light tracking-wide max-w-md mx-auto">
+          <span class="italic text-gray-300"><span class="font-semibold text-red-500">How to play</span>: Click on the correct region on the map as quickly as possible. Score points for each correct answer before time runs out!</span>
+        </p>
       </div>
     </div>
   {:else if gameStarted && !gameEnded}

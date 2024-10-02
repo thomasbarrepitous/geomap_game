@@ -7,6 +7,7 @@
   const dispatch = createEventDispatcher();
 
   export let mapData: MapData;
+  export let currentRegion: string | null = null;
 
   const MAX_ZOOM = 1.5;
   const MIN_ZOOM = 0.5;
@@ -133,9 +134,9 @@
         id={region.id}
         d={region.d}
         class="transition-colors duration-200 ease-in-out cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-        fill={hoveredRegion === region.id ? '#3B82F6' : '#E5E7EB'}
-        stroke={hoveredRegion === region.id ? '#1E40AF' : '#9CA3AF'}
-        stroke-width="0.5"
+        fill={currentRegion === region.id ? '#3B82F6' : hoveredRegion === region.id ? '#93C5FD' : '#E5E7EB'}
+        stroke={currentRegion === region.id ? '#1E40AF' : hoveredRegion === region.id ? '#3B82F6' : '#9CA3AF'}
+        stroke-width={currentRegion === region.id ? '1.5' : '0.5'}
         on:click={() => handleRegionClick(region)}
         on:keydown={(e) => handleKeydown(e, region.name)}
         on:mouseenter={(e) => handleRegionHover(e, region)}
