@@ -92,6 +92,7 @@
     if ($currentMap) {
       regions = [...$currentMap.regions];
       gameEnded = false;
+      gameStarted = false; // Reset gameStarted
       countdown = 5;
       startCountdown();
     }

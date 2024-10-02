@@ -94,7 +94,10 @@
     if ($currentMap) {
       regions = [...$currentMap.regions];
       gameEnded = false;
-      startGame();
+      gameStarted = false; // Reset gameStarted
+      countdown = 5;
+      userInput = ''; // Reset user input
+      startCountdown();
     }
   }
 </script>
