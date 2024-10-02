@@ -118,7 +118,7 @@
   });
 </script>
 
-<div class="relative w-full h-[76.67vh] rounded-lg shadow-md overflow-hidden">
+<div class="relative w-full h-[66.67vh] rounded-lg shadow-md overflow-hidden">
   <svg
     bind:this={svgElement}
     xmlns="http://www.w3.org/2000/svg"
