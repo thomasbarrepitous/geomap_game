@@ -8,8 +8,8 @@
 
   export let mapData: MapData;
 
-  const MAX_ZOOM = 5;
-  const MIN_ZOOM = 0.1;
+  const MAX_ZOOM = 1.5;
+  const MIN_ZOOM = 0.5;
   let currentZoom = tweened(1, {
     duration: 300,
     easing: cubicOut
@@ -25,9 +25,9 @@
   let isPanning = false;
   let startPoint = { x: 0, y: 0 };
 
-  function handleRegionClick(regionName: string) {
-    console.log(`Clicked on ${regionName}`);
-    // Add your click handling logic here
+  function handleRegionClick(region: Region) {
+    console.log(`Clicked on ${region.name}`);
+    dispatch('regionClick', region);
   }
 
   function handleRegionHover(event: MouseEvent, region: Region) {
@@ -75,7 +75,7 @@
       height: newHeight
     };
 
-    currentZoom.set(newZoom);
+    currentZoom.set(Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, newZoom)));
   }
 
   function handleMouseDown(event: MouseEvent) {
@@ -97,11 +97,11 @@
   }
 
   export function zoomIn() {
-    zoom(0.8, svgElement.clientWidth / 2, svgElement.clientHeight / 2);
+    zoom(0.9, svgElement.clientWidth / 2, svgElement.clientHeight / 2);
   }
 
   export function zoomOut() {
-    zoom(1.25, svgElement.clientWidth / 2, svgElement.clientHeight / 2);
+    zoom(1.1, svgElement.clientWidth / 2, svgElement.clientHeight / 2);
   }
 
   export function resetZoom() {
@@ -136,7 +136,7 @@
         fill={hoveredRegion === region.id ? '#3B82F6' : '#E5E7EB'}
         stroke={hoveredRegion === region.id ? '#1E40AF' : '#9CA3AF'}
         stroke-width="0.5"
-        on:click={() => handleRegionClick(region.name)}
+        on:click={() => handleRegionClick(region)}
         on:keydown={(e) => handleKeydown(e, region.name)}
         on:mouseenter={(e) => handleRegionHover(e, region)}
         on:mouseleave={handleRegionLeave}
@@ -155,4 +155,33 @@
     Zoom: {$currentZoom.toFixed(2)}x
   </div>
   <slot name="controls" />
+  <div class="absolute top-4 left-4 flex flex-col space-y-2">
+    <button
+      on:click={zoomIn}
+      class="bg-white dark:bg-gray-800 text-gray-800 dark:text-white p-2 rounded-md shadow-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+      aria-label="Zoom in"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+      </svg>
+    </button>
+    <button
+      on:click={zoomOut}
+      class="bg-white dark:bg-gray-800 text-gray-800 dark:text-white p-2 rounded-md shadow-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+      aria-label="Zoom out"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H6" />
+      </svg>
+    </button>
+    <button
+      on:click={resetZoom}
+      class="bg-white dark:bg-gray-800 text-gray-800 dark:text-white p-2 rounded-md shadow-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+      aria-label="Reset zoom"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+      </svg>
+    </button>
+  </div>
 </div>

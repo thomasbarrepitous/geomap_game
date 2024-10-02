@@ -4,6 +4,8 @@
   import { currentMap } from '$lib/stores/mapStore';
   import { currentGameMode } from '$lib/stores/gameStore';
   import type { MapData, GameMode } from '$lib/types';
+  import NameTheRegion from './game/NameTheRegion.svelte';
+  import FindTheRegion from './game/FindTheRegion.svelte';
 
   let maps: MapData[] = [
     { name: 'France', regions: [] },
@@ -11,8 +13,8 @@
   ];
 
   let gameModes: GameMode[] = [
-    { name: 'Name the Region', description: 'Identify regions on the map' },
-    { name: 'Find the Region', description: 'Locate specific regions on the map' },
+    { name: 'Name the Region', description: 'Identify regions on the map', component: NameTheRegion },
+    { name: 'Find the Region', description: 'Locate specific regions on the map', component: FindTheRegion },
     // Add more game modes as needed
   ];
 
@@ -31,13 +33,14 @@
 
   function startGame() {
     if (selectedMap && selectedGameMode) {
-      // Navigate to the game page
-      window.location.href = '/play/game';
+      currentMap.set(selectedMap);
+      currentGameMode.set(selectedGameMode);
+      // Navigate to the game page with the selected game mode
+      window.location.href = `/play/game?mode=${encodeURIComponent(selectedGameMode.name)}`;
     }
   }
 
   onMount(() => {
-    // Reset selections when the component mounts
     currentMap.set(null);
     currentGameMode.set(null);
   });
